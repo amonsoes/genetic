@@ -1,12 +1,5 @@
 import random
 
-from a2c_cartpole import main as a2c_main
-from a2c_cartpole import gym_room as gr
-from a2c_cartpole import agent as a2c
-
-# from ppo_cartpole import main as ppo_main
-# from ppo_cartpole import agent as ppo
-
 class Genome:
 
     def __init__(self, genes, crossover_rate, mutation_rate):
@@ -59,6 +52,8 @@ class Genome:
         individual_copy.fitness = self.fitness
         return individual_copy
 
+"""
+# Mockup for orientation
 class A2CGenome(Genome):
     
     genome = {
@@ -89,49 +84,16 @@ class A2CGenome(Genome):
         _, evaluation = a2c_main.a2c_main(agent, A2CGenome.room, 1000, 50)
         self.fitness = evaluation
         return evaluation
-    
-class PPOGenome:
-    
-    
-    genome = {
-        'gamma': [0.99, 0.98, 0.97, 0.96, 0.95, 0.94, 0.93, 0.92, 0.91, 0.90], 
-        'alpha': [0.000001, 0.000005, 0.000007, 0.00001, 0.00005, 0.00007, 0.0001, 0.0005, 0.0007, 0.001, 0.005, 0.007, 0.01, 0.05, 0.07], 
-        'beta': [0.000001, 0.000005, 0.000007, 0.00001, 0.00005, 0.00007, 0.0001, 0.0005, 0.0007, 0.001, 0.005, 0.007, 0.01, 0.05, 0.07], 
-        'hidden_dim':[32, 64, 128, 200, 300, 400, 512, 600, 700, 800, 900, 1024], 
-        'gae_lambda' : [0.90, 0.92, 0.94, 0.96, 0.98],
-        'memory_batchsize': [16, 32, 64, 128],
-        'policy_clip' : [0.1, 0.2, 0.3, 0.4]
-        }
-    
-    room = gr.GymRoom('CartPole-v1')
-    
-    def __init__(self,  genes, crossover_rate, mutation_rate):
-        super().__init__(genes, crossover_rate, mutation_rate)
-    
-    @classmethod
-    def random_init(cls, crossover_rate, mutation_rate):
-        genes = {k:random.choice(cls.genome[k]) for k in cls.genome.keys()}
-        return cls(genes, crossover_rate, mutation_rate)
-    
-    def set_fitness(self):
-        agent = ppo.PPOLearner(gamma=self.genes['gamma'],
-                               nr_actions=A2CGenome.room.num_actions_available(),
-                               nr_outputs=2,
-                               alpha=self.genes['alpha'],
-                               beta=self.genes['beta'],
-                               observation_dim=A2CGenome.room.env.observation_space.shape[0],
-                               hidden_dim=self.genes['hidden_dim'])
-        _, evaluation = ppo_main.ppo_main(agent, A2CGenome.room, 1000, 50)
-        self.fitness = evaluation
-        return evaluation
+"""
+
         
 if __name__ == '__main__':
     
     
     genes = {'gamma' : 0.99, 'alpha' : 0.0005, 'beta': 0.001, 'hidden_dim': 64}
     genes2 = {'gamma' : 0.98, 'alpha' : 0.0001, 'beta': 0.003, 'hidden_dim': 128}
-    individual = A2CGenome(genes, 0.5, 0.5)
-    individual2 = A2CGenome(genes2, 0.5, 0.5) 
+    individual = None #A2CGenome(genes, 0.5, 0.5)
+    individual2 = None # A2CGenome(genes2, 0.5, 0.5) 
     
     # test reproduce
     individual_repr = individual.reproduce(individual2)
