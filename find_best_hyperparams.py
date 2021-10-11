@@ -29,7 +29,7 @@ def find_best_hyperparams(species,
     selection = GeneticAlgorithm(population, elitism=elitism, elite_size=elite_size)
     selection.run(generation_epochs)
     with open('./best_hyperparams.txt', 'w') as w:
-        w.write(selection.population.get_fittest()[0].genes)
+        w.write(str(selection.population.get_fittest()[0].genes))
     
 if __name__ == '__main__':
     
