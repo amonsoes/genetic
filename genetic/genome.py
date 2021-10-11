@@ -1,4 +1,15 @@
 import random
+import torch
+from genetic import squad_data
+
+import genetic.train_lstm as train_lstm
+import genetic.squad_data as squad_data
+
+GPU = True if torch.cuda.is_available() else False
+DATA = './genetic/data/'
+TRAIN = 'train_binary.csv'
+DEV = 'dev_binary.csv'
+
 
 class Genome:
 
@@ -86,6 +97,31 @@ class A2CGenome(Genome):
         return evaluation
 """
 
+class LSTMGenome(Genome):
+    
+    genome = {
+        'lr': [0.1, 0.05, 0.01, 0.007, 0.005, 0.001, 0.0007, 0.0005, 0.0001, 0.00007, 0.00005, 0.00001],
+        'emb_dim': [100, 200, 250, 300, 350, 400, 450, 500, 600, 700],
+        'hidden_dim': [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800],
+        'fc_dim': [100, 200, 250, 300, 350, 400, 450, 500, 600, 700],
+        'batch_size': [1, 2, 4, 8, 16],
+        'num_layers': [1,2,3],
+        'dropout': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
+        'epochs': [1,2,3,4,5,6,7,8],
+    }
+
+    @classmethod
+    def random_init(cls, crossover_rate, mutation_rate):
+        genes = {k:random.choice(cls.genome[k]) for k in cls.genome.keys()}
+        return cls(genes, crossover_rate, mutation_rate)
+
+    def set_fitness(self):
+        data = squad_data.CSVProcessor(GPU,DATA,TRAIN,DEV,10000,2, self.genes['batch_size'],' ' )
+        model = train_lstm.ReasonLSTM(data, self.genes['emb_dim'],self.genes['hidden_dim'],self.genes['fc_dim'],self.genes['num_layers'],self.genes['dropout'])
+        training = train_lstm.Training(model,self.genes['lr'], self.genes['epochs'])
+        evaluation = training.train_model()
+        self.fitness = evaluation
+        return evaluation
         
 if __name__ == '__main__':
     
