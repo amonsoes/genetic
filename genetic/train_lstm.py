@@ -66,7 +66,7 @@ class Training:
                 loss_output = self.loss(predictions, y)
                 loss_output.backward()
                 self.optimizer.step()
-            ep_accuracy = self.dev_metrics(ep)
+            ep_accuracy = self.dev_accuracy(ep)
             if ep_accuracy > best_acc:
                 print(f'\n\n === new best accuracy {ep_accuracy} at epoch {ep} ===\n\n')
                 best_acc = ep_accuracy
