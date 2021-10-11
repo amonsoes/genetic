@@ -1,6 +1,6 @@
 
 
-# Hyperparameter Optimization for Deep Learning Algorithms
+# Genetic Hyperparameter Optimization for Deep Learning Algorithms
 
 This is a generic package to find the best training parameter for any given Deep Learning Algorithm.
 The best HP's will be saved at: **./best_hyperparams.txt**
