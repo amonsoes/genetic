@@ -58,6 +58,7 @@ class Training:
         best_acc, best_ep = 0.0, 0
         self.model.train()
         for ep in range(self.epochs):
+            ep = ep + 1
             print(f'\nTraining at epoch {ep}\n')
             self.model.train()
             for x, y in tqdm(self.model.data.train_iter):

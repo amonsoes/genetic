@@ -7,8 +7,8 @@ import genetic.squad_data as squad_data
 
 GPU = True if torch.cuda.is_available() else False
 DATA = './genetic/data/'
-TRAIN = 'train_lexic_binary.csv'
-DEV = 'dev_lexic_binary.csv'
+TRAIN = 'train_lexic.csv'
+DEV = 'dev_lexic.csv'
 
 
 class Genome:
