@@ -21,6 +21,9 @@ def find_best_hyperparams(species,
                 mutation_rate=mutation_rate,
                 maximize=maximize)
         
+    # Add your species name here and call a population
+    # if species in ('your species',...):
+        
     else:
         assert argparse.ArgumentError('WRONG INPUT FOR SPECIES. SET TO LSTM')
         population = None
