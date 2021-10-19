@@ -1,6 +1,6 @@
 import torch
 import argparse
-import squad_data
+from genetic import squad_data
 
 from torchmetrics import MetricCollection, Accuracy, F1, ConfusionMatrix
 
