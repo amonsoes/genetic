@@ -6,9 +6,7 @@ import genetic.train_lstm as train_lstm
 import genetic.squad_data as squad_data
 
 GPU = True if torch.cuda.is_available() else False
-DATA = './genetic/data/'
-TRAIN = 'train_lexic.csv'
-DEV = 'dev_lexic.csv'
+DATA = './genetic/data/data_binary.csv'
 
 
 class Genome:
@@ -116,7 +114,7 @@ class LSTMGenome(Genome):
         return cls(genes, crossover_rate, mutation_rate)
 
     def set_fitness(self):
-        data = squad_data.CSVProcessor(GPU,DATA,TRAIN,DEV,10000,2, self.genes['batch_size'],'\t' )
+        data = squad_data.CSVProcessor(GPU,DATA,10000,2, self.genes['batch_size'],'\t' )
         model = train_lstm.ReasonLSTM(data, self.genes['emb_dim'],self.genes['hidden_dim'],self.genes['fc_dim'],self.genes['num_layers'],self.genes['dropout'])
         training = train_lstm.Training(model,self.genes['lr'], self.genes['epochs'])
         evaluation = training.train_model()

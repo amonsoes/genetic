@@ -16,18 +16,17 @@ class BatchWrapper:
 
 class CSVProcessor:
     
-    def __init__(self, gpu, path, train, dev, max_size, min_freq, batch_size, split_sym, test=False):
+    def __init__(self, gpu, datapath, max_size, min_freq, batch_size, split_sym, test=False):
         print('\n\nProcessing data...\n')
         self.device = 'cuda:0' if gpu == True else 'cpu'
         self.TEXT = torchtext.data.Field(lower=True, tokenize=lambda x: x.split(split_sym), use_vocab=True, batch_first=True)
         self.LABEL = torchtext.data.Field(sequential=False, is_target=True, batch_first=True)
         fields = [('text', self.TEXT), ('label', self.LABEL)]
-        self.train, self.dev = torchtext.data.TabularDataset.splits(path=path,
-                                                               train=train,
-                                                               validation=dev,
-                                                               fields=fields,
-                                                               format='csv',
-                                                               skip_header=True)
+        dataset = torchtext.data.TabularDataset(path=datapath,
+                                                fields=fields,
+                                                format='csv',
+                                                skip_header=True)
+        self.train, self.dev = dataset.split(split_ratio=0.8)
         self.TEXT.build_vocab(self.train, max_size=max_size, min_freq=min_freq)
         self.LABEL.build_vocab(self.train, self.dev)
         self.targets = self.LABEL.vocab
@@ -45,18 +44,17 @@ class CSVProcessor:
         print('\ndone\n\n')
 
 if __name__ == '__main__':
-    
-    gpu=False
-    path = './data/'
-    train = 'train.csv'
-    dev = 'dev.csv'
-    data = CSVProcessor(gpu=gpu,
-                        path=path,
-                        train=train,
-                        dev=dev,
+      
+      difficult = 0
+      easy = 0
+
+      gpu=False
+      datapath = '/Users/amonsoares/Desktop/Question Complexity/data/data_binary.csv'
+      data = CSVProcessor(gpu=gpu,
+                        datapath=datapath,
                         max_size=10000,
                         min_freq=2,
-                        batch_size=2)
-    print('test done')
+                        batch_size=1,
+                        split_sym=' ')
     
         
