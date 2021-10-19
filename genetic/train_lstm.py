@@ -1,6 +1,6 @@
 import torch
 import argparse
-import genetic.squad_data as squad_data
+import squad_data
 
 from torchmetrics import MetricCollection, Accuracy, F1, ConfusionMatrix
 
@@ -108,28 +108,23 @@ class Training:
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('--path', type=str, default='./data/', help='path to data')
-    parser.add_argument('--train', type=str, default='train_lexic.csv', help='train file')
-    parser.add_argument('--dev', type=str, default='dev_lexic.csv', help='validation file')
-    parser.add_argument('--test', type=str, default=None, help='test file')
+    parser.add_argument('--path', type=str, default='/Users/amonsoares/Desktop/Question Complexity/data/data_binary.csv', help='path to data')
     parser.add_argument('--max_vocab', type=int, default=20000, help='maximum vocabulary size')
     parser.add_argument('--min_freq', type=int, default=2, help='minimum occurrence frequency of features')
-    parser.add_argument('--emb_dim', type=int, default=300, help='embedding dimension')
+    parser.add_argument('--emb_dim', type=int, default=400, help='embedding dimension')
     parser.add_argument('--hidden_dim', type=int, default=500, help='hidden dimension')
-    parser.add_argument('--fc_dim', type=int, default=400, help='linear dimension')
-    parser.add_argument('--batch_size', type=int, default=1, help='batch size')
+    parser.add_argument('--fc_dim', type=int, default=300, help='linear dimension')
+    parser.add_argument('--batch_size', type=int, default=16, help='batch size')
     parser.add_argument('--num_layers', type=int, default=2, help='number of LSTM layers')
-    parser.add_argument('--dropout', type=float, default=0.2, help='dropout rate')
-    parser.add_argument('--epochs', type=int, default=5, help='number of training epochs')
-    parser.add_argument('--lr', type=float, default=0.0007, help='learning rate')
+    parser.add_argument('--dropout', type=float, default=0.3, help='dropout rate')
+    parser.add_argument('--epochs', type=int, default=8, help='number of training epochs')
+    parser.add_argument('--lr', type=float, default=0.05, help='learning rate')
     parser.add_argument('-gpu', type=lambda x: x in ['YES', 'yes', '1', 'True', 'true'], default=False, help='GPU available?')
-    parser.add_argument('--split_sym', type=str, default='\t', help='how to tokenize the csv data')
+    parser.add_argument('--split_sym', type=str, default=' ', help='how to tokenize the csv data')
     args = parser.parse_args()
     
     data = squad_data.CSVProcessor(gpu=args.gpu,
-                        path=args.path,
-                        train=args.train,
-                        dev=args.dev,
+                        datapath=args.path,
                         max_size=args.max_vocab,
                         min_freq=args.min_freq,
                         batch_size=args.batch_size,
