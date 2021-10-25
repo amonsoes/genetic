@@ -6,7 +6,7 @@ import genetic.train_lstm as train_lstm
 import genetic.squad_data as squad_data
 
 GPU = True if torch.cuda.is_available() else False
-DATA = './genetic/data/data_binary.csv'
+DATA = './genetic/data/data_lexic_multiclass.csv'
 
 
 class Genome:
