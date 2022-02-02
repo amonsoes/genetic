@@ -20,7 +20,7 @@ class GeneticAlgorithm:
         fittest = self.population.get_fittest()[0]
         print("Fittest individual is: \n")
         print(fittest.genes)
-        print("Fitness value is: {}\n".format(round(fittest.fitness, 4)))
+        print("Fitness value is: {}\n".format(round(fittest.fitness.item(), 4)))
         new_population = self.population.__class__(self.population.species, indiv_list=[], maximize=self.population.maximize)
         if self.elitism:
             [new_population.add_individual(i) for i in self.population.get_fittest(self.elite_size)]

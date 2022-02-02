@@ -100,7 +100,7 @@ class LSTMGenome(Genome):
         'hidden_dim': [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800],
         'fc_dim': [100, 200, 250, 300, 350, 400, 450, 500, 600, 700],
         'batch_size': [1, 2, 4, 8, 16],
-        'num_layers': [1,2,3],
+        'num_layers': [1],
         'dropout': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
         'epochs': [5,6,7,8]
     }
@@ -112,12 +112,11 @@ class LSTMGenome(Genome):
 
     def set_fitness(self):
         GPU = True if torch.cuda.is_available() else False
-        DATA = './genetic/data/'
-        TRAIN = 'train_binary.csv'
-        DEV = 'dev_binary.csv'
-        data = squad_data.CSVProcessor(GPU,DATA,TRAIN,DEV,10000,2, self.genes['batch_size'],' ' )
+        TRAIN = './genetic/data/train.csv'
+        TEST = './genetic/data/arc_fc_th2_bin.csv'
+        data = squad_data.CSVProcessor(GPU,TRAIN,TEST,10000,1, self.genes['batch_size'],' ', sampler=True )
         model = train_lstm.ReasonLSTM(data, self.genes['emb_dim'],self.genes['hidden_dim'],self.genes['fc_dim'],self.genes['num_layers'],self.genes['dropout'])
-        training = train_lstm.Training(model,self.genes['lr'], self.genes['epochs'])
+        training = train_lstm.Training(model,self.genes['lr'], self.genes['epochs'], sampler=True)
         evaluation = training.train_model()
         self.fitness = evaluation
         return evaluation

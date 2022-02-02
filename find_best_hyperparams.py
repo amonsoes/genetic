@@ -38,14 +38,14 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('species', type=str, help='set species')
+    parser.add_argument('species', type=str, help='set species', default='LSTM')
     parser.add_argument('--pop_size', type=int, default=50, help='set population rate')
     parser.add_argument('--cross_rate', type=float, default=0.3, help='set crossover rate')
     parser.add_argument('--mut_rate', type=float, default=0.015, help='set mutation rate')
     parser.add_argument('--elitism', type=lambda x : x=='True', default=True, help='set if best indivs get to live on')
     parser.add_argument('--elite_size', type=int, default=3, help='set how many best indivs get to live on')
     parser.add_argument('--maximize', type=lambda x : x=='True', default=True, help='should indivs be maximized or minimized')
-    parser.add_argument('--gen_epochs', type=int, default=7, help='number of generations')
+    parser.add_argument('--gen_epochs', type=int, default=3, help='number of generations')
     
     args = parser.parse_args()
     
